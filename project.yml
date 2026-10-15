@@ -1,0 +1,103 @@
+name: FlippingNero
+options:
+  developmentLanguage: en
+  deploymentTarget:
+    iOS: "17.0"
+configs:
+  Debug: debug
+  Release: release
+settings:
+  base:
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
+  createIntermediateGroups: true
+packages:
+  FlippingNero:
+    path: .
+targets:
+  Nero:
+    type: application
+    platform: iOS
+    sources:
+      - App
+      - Shared
+    dependencies:
+      - package: FlippingNero
+        product: NeroKit
+      - package: FlippingNero
+        product: AgentKit
+      - target: NeroWidgets
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Flipping Nero
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        ITSAppUsesNonExemptEncryption: false
+        NSLocalNetworkUsageDescription: Flipping Nero scans the LAN you are on for live hosts, open ports and unauthenticated services during an authorized run.
+        NSLocationWhenInUseUsageDescription: Your current Wi-Fi name is used as the run title. The location permission is required by iOS to read the SSID.
+        NSSupportsLiveActivities: true
+        NSBonjourServices:
+          - _airplay._tcp
+          - _raop._tcp
+          - _http._tcp
+          - _https._tcp
+          - _ssh._tcp
+          - _sftp-ssh._tcp
+          - _workstation._tcp
+          - _smb._tcp
+          - _afpovertcp._tcp
+          - _adisk._tcp
+          - _ipp._tcp
+          - _printer._tcp
+          - _googlecast._tcp
+          - _spotify-connect._tcp
+          - _hap._tcp
+          - _companion-link._tcp
+          - _rdlink._tcp
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+        BGTaskSchedulerPermittedIdentifiers:
+          - $(APP_BUNDLE_ID).run.*
+        UIBackgroundModes:
+          - processing
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+    scheme:
+      testTargets: []
+    configFiles:
+      Debug: Config/Base.xcconfig
+      Release: Config/Base.xcconfig
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_ID)
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_STYLE: Automatic
+        TARGETED_DEVICE_FAMILY: "1"
+  NeroWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Widgets
+      - Shared
+    info:
+      path: Widgets/Info.plist
+      properties:
+        CFBundleDisplayName: Flipping Nero
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    configFiles:
+      Debug: Config/Base.xcconfig
+      Release: Config/Base.xcconfig
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_ID).Widgets
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) WIDGET_EXTENSION
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_STYLE: Automatic
+        TARGETED_DEVICE_FAMILY: "1"
